@@ -1,32 +1,32 @@
-public class UseCase4PalindromeCheckerApp {
+import java.util.Stack;
+
+public class  PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         // Declare and initialize the input string
-        String input = "radar";
+        String input = "noon";
 
-        // Convert the string into a character array
-        char[] chars = input.toCharArray();
+        // Create a Stack to store characters
+        Stack<Character> stack = new Stack<>();
 
-        // Initialize pointer at the beginning
-        int start = 0;
-
-        // Initialize pointer at the end
-        int end = chars.length - 1;
+        // Push each character of the string into the stack
+        for (char c : input.toCharArray()) {
+            stack.push(c);
+        }
 
         // Assume palindrome initially
         boolean isPalindrome = true;
 
-        // Continue comparison until pointers cross
-        while (start < end) {
+        // Iterate again through original string and compare with stack pop
+        for (char c : input.toCharArray()) {
 
-            if (chars[start] != chars[end]) {
+            char popped = stack.pop();
+
+            if (c != popped) {
                 isPalindrome = false;
                 break;
             }
-
-            start++;
-            end--;
         }
 
         // Print output as in document
