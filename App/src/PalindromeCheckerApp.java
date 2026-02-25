@@ -1,16 +1,22 @@
 /**
  * =====================================================
- * MAIN CLASS – UseCase12PalindromeCheckerApp
+ * MAIN CLASS – UseCase13PalindromeCheckerApp
  * =====================================================
  *
- * Use Case 12: Strategy Pattern for Palindrome Algorithms
+ * Use Case 13: Performance Comparison
  *
- * This class demonstrates how different palindrome
- * validation algorithms can be selected dynamically
- * at runtime using the Strategy Design Pattern.
+ * Description:
+ * This class measures and compares execution performance
+ * of palindrome validation algorithms.
+ *
+ * At this stage, the application:
+ * - Uses palindrome strategy implementations
+ * - Captures execution start and end time
+ * - Calculates total execution duration
+ * - Displays benchmarking results
  *
  * @author Developer
- * @version 12.0
+ * @version 13.0
  */
 
 public class PalindromeCheckerApp {
@@ -19,24 +25,35 @@ public class PalindromeCheckerApp {
 
         String input = "level";
 
-        // 🔹 Choose Strategy (Change here to switch algorithm)
-        PalindromeStrategy strategy = new StackStrategy();
-        // PalindromeStrategy strategy = new DequeStrategy();
+        // Test Stack Strategy
+        PalindromeStrategy stackStrategy = new StackStrategy();
+        long startTime = System.nanoTime();
+        boolean stackResult = stackStrategy.check(input);
+        long endTime = System.nanoTime();
+        long stackDuration = endTime - startTime;
 
-        boolean result = strategy.check(input);
+        // Test Deque Strategy
+        PalindromeStrategy dequeStrategy = new DequeStrategy();
+        startTime = System.nanoTime();
+        boolean dequeResult = dequeStrategy.check(input);
+        endTime = System.nanoTime();
+        long dequeDuration = endTime - startTime;
 
         System.out.println("Input : " + input);
-        System.out.println("Is Palindrome? : " + result);
+
+        System.out.println("\n--- Stack Strategy ---");
+        System.out.println("Is Palindrome? : " + stackResult);
+        System.out.println("Execution Time : " + stackDuration + " ns");
+
+        System.out.println("\n--- Deque Strategy ---");
+        System.out.println("Is Palindrome? : " + dequeResult);
+        System.out.println("Execution Time : " + dequeDuration + " ns");
     }
 }
 
 
 /**
- * =====================================================
- * INTERFACE – PalindromeStrategy
- * =====================================================
- *
- * Defines contract for all palindrome algorithms.
+ * Strategy Interface
  */
 interface PalindromeStrategy {
     boolean check(String input);
@@ -44,11 +61,7 @@ interface PalindromeStrategy {
 
 
 /**
- * =====================================================
- * CLASS – StackStrategy
- * =====================================================
- *
- * Uses Stack (LIFO) to validate palindrome.
+ * Stack-based implementation
  */
 class StackStrategy implements PalindromeStrategy {
 
@@ -57,12 +70,10 @@ class StackStrategy implements PalindromeStrategy {
 
         java.util.Stack<Character> stack = new java.util.Stack<>();
 
-        // Push all characters
         for (char c : input.toCharArray()) {
             stack.push(c);
         }
 
-        // Compare by popping
         for (char c : input.toCharArray()) {
             if (c != stack.pop()) {
                 return false;
@@ -75,11 +86,7 @@ class StackStrategy implements PalindromeStrategy {
 
 
 /**
- * =====================================================
- * CLASS – DequeStrategy
- * =====================================================
- *
- * Uses Deque (double-ended queue) to validate palindrome.
+ * Deque-based implementation
  */
 class DequeStrategy implements PalindromeStrategy {
 
@@ -88,12 +95,10 @@ class DequeStrategy implements PalindromeStrategy {
 
         java.util.Deque<Character> deque = new java.util.ArrayDeque<>();
 
-        // Add characters
         for (char c : input.toCharArray()) {
             deque.addLast(c);
         }
 
-        // Compare from both ends
         while (deque.size() > 1) {
             if (!deque.removeFirst().equals(deque.removeLast())) {
                 return false;
